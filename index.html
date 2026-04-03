@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>라온 아침 미션 🥷</title>
+<title>닌자 아침 미션 🥷</title>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -54,13 +54,13 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .edit-btn:active{background:rgba(255,255,255,0.14);}
 
 /* ── MISSION AREA ── */
-.mission-area{flex:1;display:flex;flex-direction:column;padding:10px 12px;gap:6px;overflow:hidden;min-height:0;}
+.mission-area{flex:1;display:flex;flex-direction:column;padding:10px 12px 4px;gap:4px;overflow:hidden;min-height:0;}
 .section-row{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .section-txt{font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,0.3);}
 .section-line{flex:1;height:1px;background:var(--border);}
 .done-strip{display:flex;flex-wrap:wrap;gap:5px;flex-shrink:0;}
 .done-chip{display:inline-flex;align-items:center;gap:3px;background:rgba(57,255,20,0.07);border:1px solid rgba(57,255,20,0.2);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700;color:rgba(57,255,20,0.6);text-decoration:line-through;}
-.cards-wrap{flex:1;display:flex;flex-direction:column;gap:8px;justify-content:center;min-height:0;overflow:hidden;}
+.cards-wrap{flex:1;display:flex;flex-direction:column;gap:8px;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 
 /* ── TASK CARD ── */
 .task-card{
@@ -69,6 +69,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden;
   user-select:none;-webkit-user-select:none;
   animation:card-in .3s ease both;
+  flex-shrink:0;
+  scroll-snap-align:start;
 }
 @keyframes card-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .task-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:rgba(255,255,255,0.08);transition:background .3s;}
@@ -105,19 +107,25 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 /* ── LEGO TOP BAR ── */
 .lego-top-bar{
   display:flex;justify-content:center;align-items:center;
-  flex-shrink:0;padding:6px 0 4px;
+  flex-shrink:0;
+  padding:6px 0 4px;
   border-bottom:1px solid rgba(255,255,255,0.06);
   margin-bottom:4px;
+  min-height:112px;  /* ensure figure is always visible */
 }
 .lego-top-inner{
-  display:flex;align-items:center;gap:10px;
+  display:flex;align-items:center;gap:12px;
   background:var(--panel);border:1px solid var(--border);border-radius:14px;
-  padding:8px 16px 8px 12px;
+  padding:8px 20px 8px 14px;
 }
-.lego-svg-top{width:56px;height:94px;overflow:visible;flex-shrink:0;}
-.lego-top-meta{display:flex;flex-direction:column;gap:3px;}
+.lego-svg-top{
+  width:60px;height:100px;
+  overflow:visible;flex-shrink:0;
+  display:block;
+}
+.lego-top-meta{display:flex;flex-direction:column;gap:4px;}
 .lego-fig-label{
-  font-family:'Black Han Sans',sans-serif;font-size:13px;
+  font-family:'Black Han Sans',sans-serif;font-size:14px;
   color:var(--gold);letter-spacing:1px;
   text-shadow:0 0 8px rgba(255,214,0,0.35);
 }
@@ -134,7 +142,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   pointer-events:none;min-width:200px;
 }
 .part-popup.show{transform:translate(-50%,-50%) scale(1);}
-.part-popup-svg{width:70px;height:70px;overflow:visible;display:block;margin:0 auto 8px;}
+.part-popup-svg{width:70px;height:100px;overflow:visible;display:block;margin:0 auto 8px;}
 .part-popup-title{
   font-family:'Black Han Sans',sans-serif;font-size:16px;
   color:var(--gold);letter-spacing:1px;
@@ -142,13 +150,36 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 }
 .part-popup-msg{font-size:12px;color:rgba(255,255,255,0.6);}
 
-/* split layout */
-.split-row{flex:1;display:flex;gap:8px;min-height:0;}
-.cards-col{flex:1;display:flex;flex-direction:column;gap:8px;min-height:0;min-width:0;}
-.right-panel{width:54px;display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;min-height:0;}
-.sidebar-label{font-size:8px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.25);text-align:center;flex-shrink:0;padding:2px 0;}
-.sidebar-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding:2px 0;scrollbar-width:none;min-height:0;}
-.sidebar-list::-webkit-scrollbar{display:none;}
+/* ── VERTICAL SCROLL LIST ── */
+.carousel-wrap{
+  flex:1;display:flex;flex-direction:column;
+  min-height:0;overflow:hidden;position:relative;
+}
+.carousel-track{
+  flex:1;
+  display:flex;flex-direction:column;gap:8px;
+  overflow-y:auto;overflow-x:hidden;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding:2px 0 6px;
+  min-height:0;
+}
+.carousel-track::-webkit-scrollbar{display:none;}
+.carousel-dots{
+  display:flex;justify-content:center;align-items:center;
+  gap:6px;padding:4px 0 2px;flex-shrink:0;
+}
+.dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  transition:all .25s;cursor:pointer;
+}
+.dot.active{
+  background:var(--accent);width:18px;border-radius:4px;
+  box-shadow:0 0 6px rgba(0,229,255,0.4);
+}
+.swipe-hint-lbl{font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:1px;}
 .sb-item{
   width:44px;height:44px;border-radius:8px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
@@ -339,6 +370,62 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .lego-svg-big{width:130px;height:180px;overflow:visible;}
 .lego-complete-name{font-family:'Black Han Sans',sans-serif;font-size:16px;color:var(--gold);letter-spacing:2px;text-shadow:0 0 10px rgba(255,214,0,0.4);}
 
+/* ── FIGURE COLLECTION ── */
+.collection-btn{
+  background:var(--panel);border:1px solid var(--border);border-radius:8px;
+  padding:6px 10px;color:var(--gold);font-size:12px;font-weight:700;
+  cursor:pointer;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;
+  letter-spacing:1px;
+}
+.collection-panel{
+  position:fixed;inset:0;background:var(--darker);z-index:1100;
+  display:none;flex-direction:column;
+}
+.collection-panel.show{display:flex;}
+.collection-header{
+  background:var(--dark);border-bottom:2px solid var(--gold);
+  padding:16px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;
+}
+.collection-title{
+  font-family:'Black Han Sans',sans-serif;font-size:18px;
+  color:var(--gold);letter-spacing:2px;
+}
+.collection-body{
+  flex:1;overflow-y:auto;padding:16px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  align-content:start;
+}
+.col-card{
+  background:var(--panel);border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;padding:10px 6px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  position:relative;overflow:hidden;
+}
+.col-card.earned{border-color:var(--gold);background:rgba(255,214,0,0.06);}
+.col-card.earned::after{
+  content:'✓';position:absolute;top:5px;right:8px;
+  font-size:11px;font-weight:900;color:var(--gold);
+}
+.col-card-svg{width:50px;height:84px;overflow:visible;}
+.col-card-name{
+  font-size:8px;font-weight:700;letter-spacing:.5px;
+  color:rgba(255,255,255,0.5);text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;
+}
+.col-card.earned .col-card-name{color:var(--gold);}
+.col-card-date{font-size:7px;color:rgba(255,255,255,0.3);text-align:center;}
+.col-card.locked{opacity:0.35;}
+.col-count{
+  font-size:11px;color:rgba(255,255,255,0.4);
+  text-align:center;padding:4px 0 0;flex-shrink:0;
+}
+.new-badge{
+  position:absolute;top:5px;left:6px;
+  background:var(--accent2);color:white;
+  font-size:7px;font-weight:900;padding:1px 5px;border-radius:4px;
+  letter-spacing:1px;
+}
+
 /* ── SETTINGS PANEL (name edit) ── */
 .settings-panel{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1100;display:none;flex-direction:column;}
 .settings-panel.show{display:flex;}
@@ -413,6 +500,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
         <div class="title" id="titleDisplay" onclick="startTitleEdit()">닌자 아침 미션 🥷</div>
         <div style="display:flex;gap:6px;">
           <button class="edit-btn" onclick="openSettings()">👤</button>
+          <button class="collection-btn" onclick="openCollection()">🏆 컬렉션</button>
           <button class="edit-btn" onclick="openEdit()">⚙ 편집</button>
         </div>
       </div>
@@ -452,20 +540,26 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <div class="section-row">
       <span class="section-txt" id="sectionLbl">⚔ 오늘의 미션</span>
       <div class="section-line"></div>
+      <span class="swipe-hint-lbl" id="swipeHint"></span>
     </div>
     <div class="done-strip" id="doneStrip"></div>
-    <div class="split-row">
-      <div class="cards-col">
-        <div class="cards-wrap" id="cardsWrap"></div>
-        <div class="remaining-hint" id="remainHint"></div>
-      </div>
-      <div class="right-panel">
-        <div class="sidebar-label">목록</div>
-        <div class="sidebar-list" id="sidebarList"></div>
-        <div class="sidebar-hint">꾹눌러<br>순서변경</div>
-      </div>
+    <div class="carousel-wrap" id="carouselWrap">
+      <div class="carousel-track" id="cardsWrap"></div>
+      <div class="carousel-dots" id="carouselDots"></div>
     </div>
   </div>
+</div>
+
+<!-- FIGURE COLLECTION -->
+<div class="collection-panel" id="collectionPanel">
+  <div class="collection-header">
+    <div class="collection-title">🏆 피규어 컬렉션</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="col-count" id="colCount"></div>
+      <button class="edit-close" onclick="closeCollection()">✕ 닫기</button>
+    </div>
+  </div>
+  <div class="collection-body" id="collectionBody"></div>
 </div>
 
 <!-- EDIT PANEL -->
@@ -821,29 +915,39 @@ function updateHeader(){
   document.getElementById('rewardFill').style.width=(inC/REWARD_GOAL*100)+'%';
 }
 
+// ── MISSION LIST ──
+let _carIdx = 0; // which group of 3 to show (0 = first 3, 1 = next 3, ...)
+const CARDS_PER_PAGE = 3;
+
 function renderMissions(){
-  const doneTasks=state.tasks.filter(t=>state.done[t.id]);
-  const pending=state.tasks.filter(t=>!state.done[t.id]);
+  const doneTasks = state.tasks.filter(t=>state.done[t.id]);
+  const pending   = state.tasks.filter(t=>!state.done[t.id]);
+  const allTasks  = state.tasks;
 
   // done strip
-  const strip=document.getElementById('doneStrip');
-  strip.innerHTML=doneTasks.map(t=>`<span class="done-chip">${t.emoji} ${t.name}</span>`).join('');
+  const strip = document.getElementById('doneStrip');
+  strip.innerHTML = doneTasks.map(t=>`<span class="done-chip">${t.emoji} ${t.name}</span>`).join('');
 
-  // cards: show up to 3 pending, any order (they're all clickable)
-  const wrap=document.getElementById('cardsWrap');
-  wrap.innerHTML='';
+  // Clamp page index
+  const totalPages = Math.ceil(pending.length / CARDS_PER_PAGE);
+  _carIdx = Math.max(0, Math.min(_carIdx, totalPages - 1));
 
-  const visible=pending.slice(0,3);
-  visible.forEach((task,idx)=>{
-    const card=document.createElement('div');
-    const isCurrent=idx===0;
-    card.className='task-card'+(isCurrent?' current':' upcoming');
-    card.id='task-'+task.id;
-    card.style.animationDelay=idx*0.06+'s';
+  const wrap = document.getElementById('cardsWrap');
+  wrap.innerHTML = '';
 
-    let outfitHtml='';
+  // Show ALL pending tasks, but scroll to the current page
+  pending.forEach((task, idx)=>{
+    const pageOfThisCard = Math.floor(idx / CARDS_PER_PAGE);
+    const isOnCurrentPage = pageOfThisCard === _carIdx;
+    const isCurrent = idx === _carIdx * CARDS_PER_PAGE; // first card on current page
+
+    const card = document.createElement('div');
+    card.className = 'task-card' + (isCurrent ? ' current' : ' upcoming');
+    card.id = 'task-'+task.id;
+
+    let outfitHtml = '';
     if(task.hasOutfit && isCurrent){
-      outfitHtml=`<div class="outfit-sel">
+      outfitHtml = `<div class="outfit-sel">
         <div class="outfit-lbl">▷ 오늘 복장 선택</div>
         <div class="outfit-btns">
           <button class="outfit-btn${state.outfitChoice==='uniform'?' selected':''}" onclick="selectOutfit('uniform',event)">🏫 교복</button>
@@ -851,43 +955,71 @@ function renderMissions(){
         </div></div>`;
     }
 
-    card.innerHTML=`
+    card.innerHTML = `
       <div class="emoji-box">${task.emoji}</div>
       <div class="task-info">
-        <div class="task-num">MISSION ${pad(state.tasks.indexOf(task)+1)}</div>
+        <div class="task-num">MISSION ${pad(allTasks.indexOf(task)+1)}</div>
         <div class="task-name">${task.name}</div>
         ${outfitHtml}
         <div class="task-time"></div>
       </div>
       <div class="task-right">
         <div class="task-pts">+${task.points}</div>
-        <div class="check-btn"></div>
+        <div class="check-btn" id="check-${task.id}"></div>
       </div>`;
 
-    // ANY pending card is clickable (free order)
-    card.addEventListener('click',e=>{
+    card.addEventListener('click', e=>{
       if(e.target.classList.contains('outfit-btn')) return;
       if(task.hasOutfit && !state.outfitChoice && isCurrent){ shakeFeedback(card); return; }
       checkTask(task);
     });
+
     wrap.appendChild(card);
   });
 
-  // remaining hint
-  const rem=pending.length;
-  const hint=document.getElementById('remainHint');
-  hint.textContent=rem>3?`▼ 아래 미션 ${rem-3}개 더 있어`:' ';
+  // Scroll track to top of current page
+  requestAnimationFrame(()=>{
+    const track = document.getElementById('cardsWrap');
+    if(!track) return;
+    const targetCard = document.getElementById('task-'+(pending[_carIdx*CARDS_PER_PAGE]?.id));
+    if(targetCard){
+      track.scrollTo({top: targetCard.offsetTop - 4, behavior:'smooth'});
+    }
+  });
 
-  // section label
-  document.getElementById('sectionLbl').textContent=
-    doneTasks.length===0?'⚔ 오늘의 미션':
-    pending.length===0?'✓ 모두 완료!':
-    `⚔ 미션 진행 중 (${doneTasks.length}/${state.tasks.length})`;
+  // Dots = page indicators
+  const dotsEl = document.getElementById('carouselDots');
+  if(dotsEl){
+    dotsEl.innerHTML = '';
+    if(totalPages > 1){
+      for(let p=0; p<totalPages; p++){
+        const d = document.createElement('div');
+        d.className = 'dot' + (p===_carIdx?' active':'');
+        d.onclick = ()=>{ _carIdx=p; renderMissions(); };
+        dotsEl.appendChild(d);
+      }
+      dotsEl.style.display='flex';
+    } else {
+      dotsEl.style.display='none';
+    }
+  }
 
-  if(pending.length===0 && state.tasks.length>0) setTimeout(showComplete,800);
+  // Section label + hint
+  document.getElementById('sectionLbl').textContent =
+    doneTasks.length===0 ? '⚔ 오늘의 미션' :
+    pending.length===0   ? '✓ 모두 완료!' :
+    `⚔ 미션 진행 중 (${doneTasks.length}/${allTasks.length})`;
+
+  const hint = document.getElementById('swipeHint');
+  if(hint) hint.textContent = totalPages>1 ? `${_carIdx+1}/${totalPages}` : '';
+
+  const remHint = document.getElementById('remainHint');
+  if(remHint) remHint.textContent = '';
+
+  if(pending.length===0 && allTasks.length>0) setTimeout(showComplete,800);
 }
 
-// ── SIDEBAR DRAG-TO-REORDER ──
+// ── SIDEBAR DRAG-TO-REORDER ──// ── SIDEBAR DRAG-TO-REORDER ──
 let _drag = null; // { taskId, ghost, startY, items }
 
 function renderSidebar(){
@@ -971,8 +1103,7 @@ function startDrag(task, el, startX, startY){
         const arr = state.tasks;
         const [moved] = arr.splice(fromIdx, 1);
         arr.splice(toIdx, 0, moved);
-        renderSidebar();
-        renderMissions();
+            renderMissions();
         // re-grab el ref after re-render
         const newEl = document.querySelector(`.sb-item[data-id="${_drag.taskId}"]`);
         if(newEl){ newEl.classList.add('sb-dragging'); _drag.el = newEl; }
@@ -986,7 +1117,6 @@ function startDrag(task, el, startX, startY){
     document.querySelectorAll('.sb-dragging').forEach(i=>i.classList.remove('sb-dragging'));
     _drag.ghost.remove();
     _drag = null;
-    renderSidebar();
     renderMissions();
     document.removeEventListener('mousemove', onMove);
     document.removeEventListener('mouseup',   onUp);
@@ -1004,13 +1134,12 @@ function scrollToOrCheck(task){
   if(state.done[task.id]) return;
   const pending = state.tasks.filter(t=>!state.done[t.id]);
   const reordered = [task, ...pending.filter(t=>t.id!==task.id)];
-  const doneItems = state.tasks.filter(t=>state.done[t.id]);
-  state.tasks = [...doneItems, ...reordered];
+  const done = state.tasks.filter(t=>state.done[t.id]);
+  state.tasks = [...done, ...reordered];
   renderMissions();
-  renderSidebar();
 }
 
-function render(){ updateHeader(); renderMissions(); renderSidebar(); renderTitle(); renderLegoMini(); }
+function render(){ updateHeader(); renderMissions(); renderTitle(); renderLegoMini(); }
 
 // ── CHECK TASK ──
 function checkTask(task){
@@ -1050,6 +1179,8 @@ function checkTask(task){
   if(Math.floor(state.totalPoints/REWARD_GOAL)>Math.floor(prev/REWARD_GOAL))
     setTimeout(showRewardAlert,1400);
 
+  // After check, reset to page 0 (first pending cards)
+  _carIdx = 0;
   render();
 }
 
@@ -1115,6 +1246,7 @@ function showComplete(){
     `다음엔 더 빨리! B랭크! 총 ${pts}포인트 💕`;
   document.getElementById('cTime').textContent=`완료 시각  ${h}:${m}`;
   renderLegoBig();
+  addToCollection(state.figureIdx);
   document.getElementById('completeScreen').classList.add('show');
   spawnConfetti();
   const figName = LEGO_FIGURES[state.figureIdx % LEGO_FIGURES.length].name;
@@ -1380,12 +1512,15 @@ function getLegoPartsCount(){
 function buildLegoSVG(scale, partsCount){
   const fig = LEGO_FIGURES[state.figureIdx % LEGO_FIGURES.length];
   let svg = '';
-  for(let i = 0; i < partsCount && i < fig.parts.length; i++){
+  const total = fig.parts.length;
+  for(let i = 0; i < Math.min(partsCount, total); i++){
     svg += fig.parts[i];
   }
-  // ghost outlines for locked parts
-  for(let i = partsCount; i < fig.parts.length; i++){
-    svg += `<g opacity="0.12">${fig.parts[i]}</g>`;
+  // Only show ghost if there are actually locked parts AND not fully complete
+  if(partsCount < total){
+    for(let i = partsCount; i < total; i++){
+      svg += `<g opacity="0.1">${fig.parts[i]}</g>`;
+    }
   }
   return svg;
 }
@@ -1398,10 +1533,11 @@ function renderLegoMini(){
   const done = Object.values(state.done).filter(Boolean).length;
   const total = state.tasks.length;
   const parts = getLegoPartsCount();
-  svgEl.innerHTML = buildLegoSVG(1, parts);
-  progEl.textContent = done + '/' + total + ' 미션 완료';
+  // Center the figure in the 60x100 viewbox with a slight scale
+  svgEl.innerHTML = '<g transform="translate(0,0)">' + buildLegoSVG(1, parts) + '</g>';
+  if(progEl) progEl.textContent = done + '/' + total + ' 완료';
   const fig = LEGO_FIGURES[state.figureIdx % LEGO_FIGURES.length];
-  nameEl.textContent = fig.name;
+  if(nameEl) nameEl.textContent = fig.name;
 }
 
 // Map done-count → which part was JUST unlocked (for popup)
@@ -1426,7 +1562,7 @@ function showPartPopup(prevParts, newParts, figIdx){
   const msgEl    = document.getElementById('partPopupMsg');
   if(!popupSvg) return;
 
-  // Show ALL parts up to and including the new one (assembled so far)
+  // Show all unlocked parts fully (no ghost/opacity)
   let svgContent = '';
   for(let i = 0; i <= partIdx; i++) svgContent += fig.parts[i];
   popupSvg.innerHTML = svgContent;
@@ -1444,8 +1580,87 @@ function renderLegoBig(){
   const nameEl = document.getElementById('legoCompleteName');
   if(!svgEl) return;
   const fig = LEGO_FIGURES[state.figureIdx % LEGO_FIGURES.length];
-  svgEl.innerHTML = buildLegoSVG(1, 3); // all parts
-  nameEl.textContent = fig.name;
+  // Show ALL parts fully — no ghost, no opacity
+  const allParts = fig.parts.map(p => p).join('');
+  svgEl.innerHTML = allParts;
+  if(nameEl) nameEl.textContent = fig.name;
+}
+
+// ── FIGURE COLLECTION ──
+function loadCollection(){
+  try{ return JSON.parse(localStorage.getItem('ninjaCollection')||'[]'); }
+  catch(e){ return []; }
+}
+function saveCollection(col){ localStorage.setItem('ninjaCollection', JSON.stringify(col)); }
+
+function addToCollection(figIdx){
+  const col = loadCollection();
+  const today = new Date().toLocaleDateString('ko-KR',{month:'short',day:'numeric'});
+  // Check if already earned today (same figIdx + today's date)
+  const alreadyToday = col.find(c => c.figIdx === figIdx && c.date === today);
+  if(!alreadyToday){
+    col.push({ figIdx, date: today, isNew: true });
+    saveCollection(col);
+  }
+}
+
+function openCollection(){
+  const col = loadCollection();
+  const body = document.getElementById('collectionBody');
+  const countEl = document.getElementById('colCount');
+  const earnedIdxs = new Set(col.map(c=>c.figIdx));
+  countEl.textContent = earnedIdxs.size + ' / ' + LEGO_FIGURES.length + ' 획득';
+  body.innerHTML = '';
+
+  LEGO_FIGURES.forEach((fig, idx) => {
+    const earned = earnedIdxs.has(idx);
+    const entries = col.filter(c=>c.figIdx===idx);
+    const lastEntry = entries[entries.length-1];
+    const isNew = lastEntry && lastEntry.isNew;
+
+    const card = document.createElement('div');
+    card.className = 'col-card' + (earned?' earned':' locked');
+
+    const svg = document.createElement('svg');
+    svg.className = 'col-card-svg';
+    svg.setAttribute('viewBox','0 0 60 100');
+    if(earned){
+      svg.innerHTML = fig.parts.join('');
+    } else {
+      // Silhouette for locked
+      svg.innerHTML = `<g opacity="0.2">${fig.parts.join('')}</g>`;
+    }
+
+    const name = document.createElement('div');
+    name.className = 'col-card-name';
+    name.textContent = earned ? fig.name : '???';
+
+    const date = document.createElement('div');
+    date.className = 'col-card-date';
+    date.textContent = earned ? (lastEntry?.date||'') : '미획득';
+
+    card.appendChild(svg);
+    card.appendChild(name);
+    card.appendChild(date);
+
+    if(isNew){
+      const badge = document.createElement('div');
+      badge.className = 'new-badge';
+      badge.textContent = 'NEW';
+      card.appendChild(badge);
+      // Mark as seen
+      lastEntry.isNew = false;
+      saveCollection(col);
+    }
+
+    body.appendChild(card);
+  });
+
+  document.getElementById('collectionPanel').classList.add('show');
+}
+
+function closeCollection(){
+  document.getElementById('collectionPanel').classList.remove('show');
 }
 
 // ── TITLE EDIT ──
